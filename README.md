@@ -24,7 +24,7 @@ chezmoi diff        # see what the update changed
 chezmoi apply       # restore my versions
 # — or, if the new upstream version is actually better:
 chezmoi add <file>  # adopt it as the new favorite
-git -C ~/.local/share/chezmoi commit -am "adopt upstream change" && git -C ~/.local/share/chezmoi push
+git -C ~/Documents/PERSONAL/omarchy-dotfiles commit -am "adopt upstream change" && git -C ~/Documents/PERSONAL/omarchy-dotfiles push
 ```
 
 ## New machine bootstrap
