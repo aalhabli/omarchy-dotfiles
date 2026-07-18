@@ -1,0 +1,21 @@
+#!/bin/bash
+# Omarchy quickshell bar — Bitcoin price ticker (CoinGecko, no API key).
+# Prints Waybar-style JSON like the other command widgets in this dir.
+
+data=$(curl -sf --max-time 8 \
+  "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd&include_24hr_change=true")
+
+if [[ -z "$data" ]]; then
+  echo '{"text":"󰠓 —","tooltip":"BTC: price unavailable","class":"inactive"}'
+  exit 0
+fi
+
+price=$(jq -r '.bitcoin.usd' <<<"$data")
+change=$(jq -r '.bitcoin.usd_24h_change' <<<"$data")
+
+pretty=$(printf "%'.0f" "$price")
+dir=$(awk -v c="$change" 'BEGIN { print (c >= 0) ? "" : "" }')
+pct=$(awk -v c="$change" 'BEGIN { printf "%+.1f%%", c }')
+class=$(awk -v c="$change" 'BEGIN { print (c >= 0) ? "up" : "down" }')
+
+echo "{\"text\":\"󰠓 \$${pretty} ${dir}\",\"tooltip\":\"BTC \$${pretty} (${pct} 24h)\",\"class\":\"${class}\"}"

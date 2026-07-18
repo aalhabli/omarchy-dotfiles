@@ -1,0 +1,11 @@
+#!/bin/bash
+# Omarchy quickshell bar — AWS Client VPN (edlio international) status.
+# Prints Waybar-style JSON. "Connected" = a patched openvpn process is running
+# (openaws-vpn-client spawns openvpn via pkexec on connect). Tailscale uses
+# tailscale0 and never has "openvpn" in its command line, so it won't match.
+
+if pgrep -f 'openvpn' >/dev/null 2>&1; then
+  echo '{"text":"󰦝","tooltip":"Work VPN: connected","class":"active"}'
+else
+  echo '{"text":"󰦞","tooltip":"Work VPN: disconnected (click to open client)","class":"inactive"}'
+fi

@@ -1,0 +1,12 @@
+#!/bin/bash
+# Runs automatically after `omarchy update`.
+# Checks whether the update drifted any chezmoi-managed config and notifies,
+# rather than auto-applying — edge-channel migrations sometimes change config
+# schemas on purpose, so review the diff before restoring.
+
+drift=$(PAGER=cat chezmoi diff 2>/dev/null | grep -c '^diff ')
+
+if ((drift > 0)); then
+  notify-send -u critical "Omarchy update drifted ${drift} config file(s)" \
+    "Review: chezmoi diff\nRestore favorites: chezmoi apply\nKeep new version: chezmoi add <file>"
+fi
